@@ -25,10 +25,9 @@ jobs:
 
     - name: "Setup arch-install-scripts"
       run: |
-        sudo apt install -y asciidoc
         git clone https://github.com/archlinux/arch-install-scripts
         pushd arch-install-scripts
-        make
+        make arch-chroot
         popd
 
     - name: "Setup Arch Linux ARM rootfs"
@@ -36,6 +35,7 @@ jobs:
         wget http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz
         mkdir archlinuxarm
         sudo tar -xpf ArchLinuxARM-aarch64-latest.tar.gz -C archlinuxarm
+        sudo mount --bind archlinuxarm archlinuxarm
 
     - name: "Initialize Arch Linux ARM"
       run: |
