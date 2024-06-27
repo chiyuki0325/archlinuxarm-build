@@ -1,4 +1,4 @@
-FROM agners/archlinuxarm:latest
+FROM agners/archlinuxarm-arm64v8
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN date
