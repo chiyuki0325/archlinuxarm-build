@@ -20,12 +20,11 @@ jobs:
       run: |
         sudo apt update -y
         sudo apt install -y qemu qemu-user-static binfmt-support
-        sudo update-binfmts --enable qemu-arm
-        sudo update-binfmts --enable qemu-aarch64
         sudo update-binfmts --display
 
     - name: "Setup arch-install-scripts"
       run: |
+        sudo apt install -y asciidoc
         git clone https://github.com/archlinux/arch-install-scripts
         pushd arch-install-scripts
         make
@@ -33,7 +32,7 @@ jobs:
 
     - name: "Setup Arch Linux ARM rootfs"
       run: |
-        sudo apt install bsdtar -y
+        sudo apt install -y bsdtar
         wget http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz
         mkdir archlinuxarm
         bsdtar -xpf ArchLinuxARM-aarch64-latest.tar.gz -C archlinuxarm
@@ -48,7 +47,6 @@ jobs:
         sudo install -Dm755 build-packages.sh archlinuxarm/build-packages.sh
         sudo install -Dm755 encode-names.py archlinuxarm/encode-names.py
         sudo ./arch-install-scripts/arch-chroot archlinuxarm /bin/bash -c "/build-packages.sh"
-
 
     - uses: actions/upload-artifact@v3
       with:
