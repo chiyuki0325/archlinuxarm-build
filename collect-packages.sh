@@ -18,7 +18,7 @@ if [ ! -f ~/.config/rclone/rclone.conf ]; then
 fi
 
 
-repo-add "./${repo_name:?}.db.tar.gz" ./*.tar.zst
+repo-add "./${repo_name:?}.db.tar.gz" ./*pkg*
 python3 /sync-packages.py
 rm "./${repo_name:?}.db.tar.gz"
 rm "./${repo_name:?}.files.tar.gz"
