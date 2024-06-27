@@ -2,8 +2,7 @@
 sed -i 's/^SigLevel.*/SigLevel = Never/' /etc/pacman.conf
 sed -i 's/^LocalFileSigLevel.*/LocalFileSigLevel = Never/' /etc/pacman.conf
 sed -i 's/^#RemoteFileSigLevel.*/RemoteFileSigLevel = Never/' /etc/pacman.conf
-cat << EOM > /etc/pacman.conf
-
+cat << EOM >> /etc/pacman.conf
 [archlinuxcn]
 Server = https://repo.archlinuxcn.org/aarch64
 SigLevel = Never
