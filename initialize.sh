@@ -11,8 +11,8 @@ EOM
 # pacman-key --populate archlinuxarm
 # pacman-key --lsign-key "farseerfc@archlinux.org"
 # pacman -Syu archlinux-keyring archlinuxarm-keyring archlinuxcn-keyring
-pacman -Rdd linux-firmware linux-aarch64 mkinitcpio mkinitcpio-busybox
-pacman -Syu --noconfirm base-devel git python yay --ignore linux-firmware --ignore linux-firmware-whence --ignore linux-aarch64 --ignore mkinitcpio --ignore mkinitcpio-busybox
+pacman -Rdd linux-firmware linux-aarch64 mkinitcpio mkinitcpio-busybox --noconfirm
+pacman -Syu --noconfirm base-devel git python yay --ignore linux-firmware --ignore linux-firmware-whence --ignore linux-aarch64 --ignore mkinitcpio --ignore mkinitcpio-busybox --ignore cryptsetup
 
 useradd builder -m
 echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
