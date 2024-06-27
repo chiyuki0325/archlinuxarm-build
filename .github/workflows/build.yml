@@ -40,14 +40,15 @@ jobs:
     - name: "Initialize Arch Linux ARM"
       run: |
         sudo install -Dm755 initialize.sh archlinuxarm/initialize.sh
-        sudo ./arch-install-scripts/arch-chroot archlinuxarm /bin/bash "/initialize.sh"
+        sudo ./arch-install-scripts/arch-chroot archlinuxarm /bin/bash -c "/initialize.sh"
 
     - name: "Build packages"
       run: |
         sudo install -Dm755 build-packages.sh archlinuxarm/build-packages.sh
         sudo install -Dm755 encode-names.py archlinuxarm/encode-names.py
         sudo ls archlinuxarm/
-        sudo ./arch-install-scripts/arch-chroot archlinuxarm /bin/bash "/build-packages.sh"
+        echo "export PACKAGES=${PACKAGES}" | sudo tee archlinuxarm/exports
+        sudo ./arch-install-scripts/arch-chroot archlinuxarm /bin/bash -c "source /exports; /build-packages.sh"
 
     - name: "Collect packages"
       env:
@@ -60,7 +61,15 @@ jobs:
         echo "Collecting packages for ${repo_name}"
         sudo install -Dm755 collect-packages.sh archlinuxarm/collect-packages.sh
         sudo install -Dm755 sync-packages.py archlinuxarm/sync-packages.py
-        sudo ./arch-install-scripts/arch-chroot archlinuxarm /bin/bash "/collect-packages.sh"
+        cat << EOF > exports
+        export RCLONE_ONEDRIVE_TOKEN=${RCLONE_ONEDRIVE_TOKEN}
+        export RCLONE_ONEDRIVE_DRIVE_ID=${RCLONE_ONEDRIVE_DRIVE_ID}
+        export RCLONE_ONEDRIVE_DRIVE_TYPE=${RCLONE_ONEDRIVE_DRIVE_TYPE}
+        export repo_name=${repo_name}
+        export dest_path=${dest_path}
+        EOF
+        sudo mv exports archlinuxarm/exports
+        sudo ./arch-install-scripts/arch-chroot archlinuxarm /bin/bash -c "source /exports; /collect-packages.sh"
         cp -r archlinuxarm/packages ./packages
         sudo chown -R $USER:$USER packages
 
