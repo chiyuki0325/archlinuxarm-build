@@ -2,10 +2,10 @@
 name: BUILD
 
 on:
-  push:
+  # push:
   workflow_dispatch:
-  schedule:
-    - cron:  '0 8 * * *'
+  # schedule:
+  #  - cron:  '0 8 * * *'
 
 env:
   PACKAGES: "mutter-performance"
