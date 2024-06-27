@@ -5,7 +5,7 @@ on:
   push:
   workflow_dispatch:
   schedule:
-    - cron:  '1 */8 * * *'
+    - cron:  '0 8 * * *'
 
 env:
   PACKAGES: "mutter-performance"
@@ -49,16 +49,18 @@ jobs:
         sudo ./arch-install-scripts/arch-chroot archlinuxarm /bin/bash -c "/build-packages.sh"
 
     - name: "Collect packages"
+      env:
+        RCLONE_ONEDRIVE_TOKEN: ${{ secrets.RCLONE_ONEDRIVE_TOKEN }}
+        RCLONE_ONEDRIVE_DRIVE_ID: ${{ secrets.RCLONE_ONEDRIVE_DRIVE_ID }}
+        RCLONE_ONEDRIVE_DRIVE_TYPE: ${{ secrets.RCLONE_ONEDRIVE_DRIVE_TYPE }}
+        repo_name: chiyuki-arm
+        dest_path: /chiyuki-arm-packages
       run: |
-        mkdir packages
-        sudo cp ./archlinuxarm/build/*/*.pkg* ./packages/
+        sudo install -Dm755 collect-packages.sh archlinuxarm/collect-packages.sh
+        sudo install -Dm755 sync-packages.py archlinuxarm/sync-packages.py
+        sudo ./arch-install-scripts/arch-chroot archlinuxarm /bin/bash -c "/collect-packages.sh"
+        cp -r archlinuxarm/packages ./packages
         sudo chown -R $USER:$USER packages
-
-    - uses: actions/upload-artifact@v3
-      with:
-        path: ./packages/*.pkg*
-        # name: ${{ matrix.repos }}
-        if-no-files-found: error
 
     - uses: ncipollo/release-action@v1
       with:

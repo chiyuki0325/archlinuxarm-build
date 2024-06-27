@@ -11,6 +11,7 @@ EOM
 # pacman-key --populate archlinuxarm
 # pacman-key --lsign-key "farseerfc@archlinux.org"
 # pacman -Syu archlinux-keyring archlinuxarm-keyring archlinuxcn-keyring
+pacman -Rdd linux-firmware linux-aarch64 mkinitcpio mkinitcpio-busybox
 pacman -Syu --noconfirm base-devel git python yay
 
 useradd builder -m
