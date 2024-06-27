@@ -1,3 +1,4 @@
+
 name: BUILD
 
 on:
@@ -32,10 +33,9 @@ jobs:
 
     - name: "Setup Arch Linux ARM rootfs"
       run: |
-        sudo apt install -y bsdtar
         wget http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz
         mkdir archlinuxarm
-        bsdtar -xpf ArchLinuxARM-aarch64-latest.tar.gz -C archlinuxarm
+        tar -xpf ArchLinuxARM-aarch64-latest.tar.gz -C archlinuxarm
 
     - name: "Initialize Arch Linux ARM"
       run: |
